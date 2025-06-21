@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Autolux.CoreApp.Domain\Autolux.CoreApp.Domain.csproj" />
+    <ProjectReference Include="..\Autolux.CoreApp.Infrastructure\Autolux.CoreApp.Infrastructure.csproj" />
+    <ProjectReference Include="..\Autolux.CoreApp.Models\Autolux.CoreApp.Models.csproj" />
+  </ItemGroup>
+
+</Project>
