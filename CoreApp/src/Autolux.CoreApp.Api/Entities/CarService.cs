@@ -25,10 +25,11 @@ public class CarService : ICarService
             carCreateModel.Price
             );
 
-        await _carRepository.AddAsync(carEntity, cancellationToken);
+        var car = await _carRepository.AddAsync(carEntity, cancellationToken);
 
         return new CarModel
         {
+            Id = car.Id,
             Brand = carCreateModel.Brand,
             Name = carCreateModel.Name,
             Year = carCreateModel.Year,
