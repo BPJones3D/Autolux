@@ -404,3 +404,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/ApiGateway/src/Autolux.ApiGateway.Api/appsettings.Development.json
