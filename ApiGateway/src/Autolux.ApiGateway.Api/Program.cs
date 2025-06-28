@@ -27,6 +27,12 @@ builder.Services.AddApiServices();
 
 //Configure the HTTP request pipeline
 var app = builder.Build();
+app.UseCors(policy =>
+{
+    policy.AllowAnyOrigin()
+          .AllowAnyMethod()
+          .AllowAnyHeader();
+});
 app.UseCustomSwagger();
 app.UseHttpsRedirection();
 app.UseAuthorization();

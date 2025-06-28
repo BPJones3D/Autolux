@@ -22,7 +22,16 @@ public class CarService : ICarService
             carCreateModel.Brand,
             carCreateModel.Name,
             carCreateModel.Year,
-            carCreateModel.Price
+            carCreateModel.Price,
+            carCreateModel.Miles,
+            carCreateModel.Transmission,
+            carCreateModel.FuelType,
+            carCreateModel.TankCapacity,
+            carCreateModel.MilesPerGallon,
+            carCreateModel.SeatCount,
+            carCreateModel.DoorCount,
+            carCreateModel.Colour,
+            carCreateModel.Description
             );
 
         var car = await _carRepository.AddAsync(carEntity, cancellationToken);
@@ -33,7 +42,16 @@ public class CarService : ICarService
             Brand = carCreateModel.Brand,
             Name = carCreateModel.Name,
             Year = carCreateModel.Year,
-            Price = carCreateModel.Price
+            Price = carCreateModel.Price,
+            Miles = carCreateModel.Miles,
+            Transmission = carCreateModel.Transmission,
+            FuelType = carCreateModel.FuelType,
+            TankCapacity = carCreateModel.TankCapacity,
+            MilesPerGallon = carCreateModel.MilesPerGallon,
+            SeatCount = carCreateModel.SeatCount,
+            DoorCount = carCreateModel.DoorCount,
+            Colour = carCreateModel.Colour,
+            Description = carCreateModel.Description
         };
     }
 
@@ -61,7 +79,16 @@ public class CarService : ICarService
                 Brand = car.Brand,
                 Name = car.Name,
                 Year = car.Year,
-                Price = car.Price
+                Price = car.Price,
+                Miles = car.Miles,
+                Transmission = car.Transmission,
+                FuelType = car.FuelType,
+                TankCapacity = car.TankCapacity,
+                MilesPerGallon = car.MilesPerGallon,
+                SeatCount = car.SeatCount,
+                DoorCount = car.DoorCount,
+                Colour = car.Colour,
+                Description = car.Description
             };
 
             carModels.Add(carModel);
@@ -86,7 +113,16 @@ public class CarService : ICarService
             Brand = car.Brand,
             Name = car.Name,
             Year = car.Year,
-            Price = car.Price
+            Price = car.Price,
+            Miles = car.Miles,
+            Transmission = car.Transmission,
+            FuelType = car.FuelType,
+            TankCapacity = car.TankCapacity,
+            MilesPerGallon = car.MilesPerGallon,
+            SeatCount = car.SeatCount,
+            DoorCount = car.DoorCount,
+            Colour = car.Colour,
+            Description = car.Description
         };
 
         return carModel;
@@ -102,7 +138,16 @@ public class CarService : ICarService
             Brand = car.Brand,
             Name = car.Name,
             Year = car.Year,
-            Price = car.Price
+            Price = car.Price,
+            Miles = car.Miles,
+            Transmission = car.Transmission,
+            FuelType = car.FuelType,
+            TankCapacity = car.TankCapacity,
+            MilesPerGallon = car.MilesPerGallon,
+            SeatCount = car.SeatCount,
+            DoorCount = car.DoorCount,
+            Colour = car.Colour,
+            Description = car.Description
         }).ToList();
 
         return summaryList;
@@ -125,6 +170,15 @@ public class CarService : ICarService
         car.UpdateName(carUpdateModel.Name);
         car.UpdateYear(carUpdateModel.Year);
         car.UpdatePrice(carUpdateModel.Price);
+        car.UpdateMiles(carUpdateModel.Miles);
+        car.UpdateTransmission(carUpdateModel.Transmission);
+        car.UpdateFuelType(carUpdateModel.FuelType);
+        car.UpdateTankCapacity(carUpdateModel.TankCapacity);
+        car.UpdateMilesPerGallon(carUpdateModel.MilesPerGallon);
+        car.UpdateSeatCount(carUpdateModel.SeatCount);
+        car.UpdateDoorCount(carUpdateModel.DoorCount);
+        car.UpdateColour(carUpdateModel.Colour);
+        car.UpdateDescription(carUpdateModel.Description);
 
         await _carRepository.UpdateAsync(car, cancellationToken);
 
@@ -133,7 +187,17 @@ public class CarService : ICarService
             Id = car.Id,
             Brand = car.Brand,
             Name = car.Name,
-            Year = car.Year
+            Year = car.Year,
+            Price = car.Price,
+            Miles = car.Miles,
+            Transmission = car.Transmission,
+            FuelType = car.FuelType,
+            TankCapacity = car.TankCapacity,
+            MilesPerGallon = car.MilesPerGallon,
+            SeatCount = car.SeatCount,
+            DoorCount = car.DoorCount,
+            Colour = car.Colour,
+            Description = car.Description
         };
 
     }
@@ -156,6 +220,15 @@ public class CarService : ICarService
                 Name = car.Name,
                 Year = car.Year,
                 Price = car.Price,
+                Miles = car.Miles,
+                Transmission = car.Transmission,
+                FuelType = car.FuelType,
+                TankCapacity = car.TankCapacity,
+                MilesPerGallon = car.MilesPerGallon,
+                SeatCount = car.SeatCount,
+                DoorCount = car.DoorCount,
+                Colour = car.Colour,
+                Description = car.Description
             };
 
             carModels.Add(carModel);
@@ -184,7 +257,16 @@ public class CarService : ICarService
                 Brand = car.Brand,
                 Name = car.Name,
                 Year = car.Year,
-                Price = car.Price
+                Price = car.Price,
+                Miles = car.Miles,
+                Transmission = car.Transmission,
+                FuelType = car.FuelType,
+                TankCapacity = car.TankCapacity,
+                MilesPerGallon = car.MilesPerGallon,
+                SeatCount = car.SeatCount,
+                DoorCount = car.DoorCount,
+                Colour = car.Colour,
+                Description = car.Description
             };
 
             carModels.Add(carModel);
