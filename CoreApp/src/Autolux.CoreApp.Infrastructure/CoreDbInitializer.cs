@@ -1,12 +1,12 @@
 ﻿using Autolux.CoreApp.Infrastructure.Seeds;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace Autolux.CoreApp.Infrastructure;
-public class CoreDbInitializer(CoreDbContext _dbContext, IConfiguration conf)
+public class CoreDbInitializer(CoreDbContext _dbContext)
 {
     public async Task SeedAsync()
     {
+        await _dbContext.Database.EnsureCreatedAsync();
         await SeedCars();
     }
 

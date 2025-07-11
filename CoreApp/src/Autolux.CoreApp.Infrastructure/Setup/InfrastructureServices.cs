@@ -1,8 +1,8 @@
-﻿using Autolux.CoreApp.Infrastructure;
-using Autolux.CoreApp.Infrastructure.Repositories;
+﻿using Autolux.CoreApp.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
+namespace Autolux.CoreApp.Infrastructure.Setup;
 public static class InfrastructureServices
 {
     public static void AddInfrastructureServices(this IServiceCollection services)

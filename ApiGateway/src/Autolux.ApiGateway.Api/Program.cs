@@ -1,5 +1,7 @@
+using Autolux.ApiGateway.Api.Setup;
 using Autolux.ApiGateway.Api.Setup.Extensions;
 using Autolux.CoreApp.Api.Setup;
+using Autolux.CoreApp.Infrastructure.Setup;
 using System.Text.Json.Serialization;
 
 var configurationBuilder = new ConfigurationBuilder()
@@ -23,6 +25,7 @@ builder.Services.AddControllers()
 
 builder.Services.AddSwaggerConfigurations();
 builder.Services.AddInfrastructureServices();
+builder.Services.AddCoreAppServices();
 builder.Services.AddApiServices();
 
 //Configure the HTTP request pipeline
@@ -38,4 +41,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
+await app.Initialize();
 await app.RunAsync();
