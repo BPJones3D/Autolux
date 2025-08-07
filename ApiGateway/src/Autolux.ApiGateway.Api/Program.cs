@@ -2,8 +2,7 @@ using Autolux.ApiGateway.Api.Setup;
 using Autolux.ApiGateway.Api.Setup.Extensions;
 using Autolux.CoreApp.Api.Setup;
 using Autolux.CoreApp.Infrastructure.Setup;
-using Autolux.CoreApp.Models.Cars;
-using FluentValidation;
+using FluentValidation.AspNetCore;
 using System.Text.Json.Serialization;
 
 var configurationBuilder = new ConfigurationBuilder()
@@ -29,7 +28,8 @@ builder.Services.AddSwaggerConfigurations();
 builder.Services.AddInfrastructureServices();
 builder.Services.AddCoreAppServices();
 builder.Services.AddApiServices();
-builder.Services.AddScoped<IValidator<CarUpdateModel>, CarUpdateModelValidator>();
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.InitializerFluentValidation();
 
 //Configure the HTTP request pipeline
 var app = builder.Build();
