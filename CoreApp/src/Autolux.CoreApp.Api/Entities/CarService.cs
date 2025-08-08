@@ -1,16 +1,19 @@
 ﻿using Autolux.CoreApp.Domain.Cars;
 using Autolux.CoreApp.Infrastructure.Repositories;
 using Autolux.CoreApp.Models.Cars;
+using AutoMapper;
 
 namespace Autolux.CoreApp.Api.Entities;
 public class CarService : ICarService
 {
     private readonly ICarRepository _carRepository;
+    private readonly IMapper _mapper;
 
-    public CarService(ICarRepository carRepository)
+    public CarService(ICarRepository carRepository, IMapper mapper)
     {
         ArgumentNullException.ThrowIfNull(carRepository);
         _carRepository = carRepository;
+        _mapper = mapper;
     }
 
     public async Task<CarModel> AddAsync(CarCreateModel carCreateModel, CancellationToken cancellationToken)
@@ -18,41 +21,11 @@ public class CarService : ICarService
         if (carCreateModel == null)
             throw new ArgumentNullException(nameof(carCreateModel));
 
-        var carEntity = new Car(
-            carCreateModel.Brand,
-            carCreateModel.Name,
-            carCreateModel.Year,
-            carCreateModel.Price,
-            carCreateModel.Miles,
-            carCreateModel.Transmission,
-            carCreateModel.FuelType,
-            carCreateModel.TankCapacity,
-            carCreateModel.MilesPerGallon,
-            carCreateModel.SeatCount,
-            carCreateModel.DoorCount,
-            carCreateModel.Colour,
-            carCreateModel.Description
-            );
+        var carEntity = _mapper.Map<Car>(carCreateModel);
 
         var car = await _carRepository.AddAsync(carEntity, cancellationToken);
 
-        return new CarModel
-        {
-            Id = car.Id,
-            Brand = carCreateModel.Brand,
-            Name = carCreateModel.Name,
-            Year = carCreateModel.Year,
-            Price = carCreateModel.Price,
-            Miles = carCreateModel.Miles,
-            Transmission = carCreateModel.Transmission,
-            FuelType = carCreateModel.FuelType,
-            TankCapacity = carCreateModel.TankCapacity,
-            MilesPerGallon = carCreateModel.MilesPerGallon,
-            SeatCount = carCreateModel.SeatCount,
-            DoorCount = carCreateModel.DoorCount,
-            Colour = carCreateModel.Colour,
-            Description = carCreateModel.Description
-        };
+        return _mapper.Map<CarModel>(car);
     }
 
     public async Task DeleteAsync(CarDeleteModel carDeleteModel, CancellationToken cancellationToken)
@@ -73,23 +46,7 @@ public class CarService : ICarService
 
         foreach (var car in cars)
         {
-            var carModel = new CarModel()
-            {
-                Id = car.Id,
-                Brand = car.Brand,
-                Name = car.Name,
-                Year = car.Year,
-                Price = car.Price,
-                Miles = car.Miles,
-                Transmission = car.Transmission,
-                FuelType = car.FuelType,
-                TankCapacity = car.TankCapacity,
-                MilesPerGallon = car.MilesPerGallon,
-                SeatCount = car.SeatCount,
-                DoorCount = car.DoorCount,
-                Colour = car.Colour,
-                Description = car.Description
-            };
+            var carModel = _mapper.Map<CarModel>(car);
 
             carModels.Add(carModel);
         }
@@ -107,23 +64,7 @@ public class CarService : ICarService
         if (car == null)
             return new CarModel();
 
-        var carModel = new CarModel()
-        {
-            Id = car.Id,
-            Brand = car.Brand,
-            Name = car.Name,
-            Year = car.Year,
-            Price = car.Price,
-            Miles = car.Miles,
-            Transmission = car.Transmission,
-            FuelType = car.FuelType,
-            TankCapacity = car.TankCapacity,
-            MilesPerGallon = car.MilesPerGallon,
-            SeatCount = car.SeatCount,
-            DoorCount = car.DoorCount,
-            Colour = car.Colour,
-            Description = car.Description
-        };
+        var carModel = _mapper.Map<CarModel>(car);
 
         return carModel;
     }
@@ -182,23 +123,8 @@ public class CarService : ICarService
 
         await _carRepository.UpdateAsync(car, cancellationToken);
 
-        return new CarModel()
-        {
-            Id = car.Id,
-            Brand = car.Brand,
-            Name = car.Name,
-            Year = car.Year,
-            Price = car.Price,
-            Miles = car.Miles,
-            Transmission = car.Transmission,
-            FuelType = car.FuelType,
-            TankCapacity = car.TankCapacity,
-            MilesPerGallon = car.MilesPerGallon,
-            SeatCount = car.SeatCount,
-            DoorCount = car.DoorCount,
-            Colour = car.Colour,
-            Description = car.Description
-        };
+
+        return _mapper.Map<CarModel>(car);
 
     }
 
@@ -213,23 +139,7 @@ public class CarService : ICarService
 
         foreach (var car in cars)
         {
-            var carModel = new CarModel()
-            {
-                Id = car.Id,
-                Brand = car.Brand,
-                Name = car.Name,
-                Year = car.Year,
-                Price = car.Price,
-                Miles = car.Miles,
-                Transmission = car.Transmission,
-                FuelType = car.FuelType,
-                TankCapacity = car.TankCapacity,
-                MilesPerGallon = car.MilesPerGallon,
-                SeatCount = car.SeatCount,
-                DoorCount = car.DoorCount,
-                Colour = car.Colour,
-                Description = car.Description
-            };
+            var carModel = _mapper.Map<CarModel>(car);
 
             carModels.Add(carModel);
         }
@@ -251,23 +161,7 @@ public class CarService : ICarService
 
         foreach (var car in cars)
         {
-            var carModel = new CarModel()
-            {
-                Id = car.Id,
-                Brand = car.Brand,
-                Name = car.Name,
-                Year = car.Year,
-                Price = car.Price,
-                Miles = car.Miles,
-                Transmission = car.Transmission,
-                FuelType = car.FuelType,
-                TankCapacity = car.TankCapacity,
-                MilesPerGallon = car.MilesPerGallon,
-                SeatCount = car.SeatCount,
-                DoorCount = car.DoorCount,
-                Colour = car.Colour,
-                Description = car.Description
-            };
+            var carModel = _mapper.Map<CarModel>(car);
 
             carModels.Add(carModel);
         }

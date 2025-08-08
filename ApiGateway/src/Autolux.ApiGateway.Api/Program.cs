@@ -1,9 +1,12 @@
 using Autolux.ApiGateway.Api.Setup;
 using Autolux.ApiGateway.Api.Setup.Extensions;
 using Autolux.CoreApp.Api.Setup;
+using Autolux.CoreApp.Domain.Cars;
 using Autolux.CoreApp.Infrastructure.Setup;
+using Autolux.CoreApp.Models.Cars;
 using FluentValidation.AspNetCore;
 using System.Text.Json.Serialization;
+
 
 var configurationBuilder = new ConfigurationBuilder()
     .SetBasePath(Path.Combine(AppContext.BaseDirectory))
@@ -24,6 +27,11 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.WriteIndented = true;
     });
 
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.CreateMap<CarCreateModel, Car>();
+    cfg.CreateMap<Car, CarModel>();
+});
 builder.Services.AddSwaggerConfigurations();
 builder.Services.AddInfrastructureServices();
 builder.Services.AddCoreAppServices();

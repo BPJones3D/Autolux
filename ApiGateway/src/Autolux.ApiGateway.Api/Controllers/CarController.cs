@@ -1,5 +1,6 @@
 ﻿using Autolux.CoreApp.Api.Entities;
 using Autolux.CoreApp.Models.Cars;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -9,10 +10,12 @@ namespace Autolux.ApiGateway.Api.Controllers;
 public class CarController : ControllerBase
 {
     private readonly ICarService _carService;
+    private readonly IMapper _mapper;
 
-    public CarController(ICarService carService)
+    public CarController(ICarService carService, IMapper mapper)
     {
         _carService = carService;
+        _mapper = mapper;
     }
 
     [HttpPost]
