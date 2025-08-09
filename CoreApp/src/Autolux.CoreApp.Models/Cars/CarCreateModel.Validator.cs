@@ -1,11 +1,10 @@
 ﻿using FluentValidation;
 
 namespace Autolux.CoreApp.Models.Cars;
-public class CarUpdateModelValidator : AbstractValidator<CarUpdateModel>
+public class CarCreateModelValidator : AbstractValidator<CarCreateModel>
 {
-    public CarUpdateModelValidator()
+    public CarCreateModelValidator()
     {
-        RuleFor(x => x.Id).NotEmpty();
         RuleFor(x => x.Brand).NotEmpty().WithMessage("Brand must not be empty!");
         RuleFor(x => x.Name).NotEmpty().WithMessage("Name must not be empty!");
 

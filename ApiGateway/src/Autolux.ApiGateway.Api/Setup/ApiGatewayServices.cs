@@ -20,5 +20,6 @@ public static class ApiGatewayServices
     public static void InitializerFluentValidation(this IServiceCollection services)
     {
         services.AddScoped<IValidator<CarUpdateModel>, CarUpdateModelValidator>();
+        services.AddScoped<IValidator<CarCreateModel>, CarCreateModelValidator>();
     }
 }
