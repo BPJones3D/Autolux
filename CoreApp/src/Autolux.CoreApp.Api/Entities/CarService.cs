@@ -73,23 +73,7 @@ public class CarService : ICarService
     {
         var cars = await _carRepository.GetListAsync(cancellationToken);
 
-        var summaryList = cars.Select(car => new CarSummaryModel
-        {
-            Id = car.Id,
-            Brand = car.Brand,
-            Name = car.Name,
-            Year = car.Year,
-            Price = car.Price,
-            Miles = car.Miles,
-            Transmission = car.Transmission,
-            FuelType = car.FuelType,
-            TankCapacity = car.TankCapacity,
-            MilesPerGallon = car.MilesPerGallon,
-            SeatCount = car.SeatCount,
-            DoorCount = car.DoorCount,
-            Colour = car.Colour,
-            Description = car.Description
-        }).ToList();
+        var summaryList = _mapper.Map<List<CarSummaryModel>>(cars);
 
         return summaryList;
     }
