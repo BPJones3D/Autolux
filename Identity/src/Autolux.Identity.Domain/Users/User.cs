@@ -9,6 +9,7 @@ public class User : BaseEntity
     public string LastName { get; private set; } = string.Empty;
     public string Email { get; private set; } = string.Empty;
     public string NormalizedEmail { get; private set; } = string.Empty;
+    public string Password { get; private set; } = string.Empty;
     public IEnumerable<UserRole> UserRoles => _userRoles.AsEnumerable();
     private readonly List<UserRole> _userRoles = [];
 
@@ -18,4 +19,9 @@ public class User : BaseEntity
     private readonly List<UserClaim> _userClaim = [];
 
     public IEnumerable<Claim> Claims => UserClaims.Select(x => x.Claim);
+
+    public void SetPassword(string password)
+    {
+        Password = password;
+    }
 }
