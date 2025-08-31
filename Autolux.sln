@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autolux.SharedKernel", "Com
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autolux.Identity.Infrastructure", "Identity\src\Autolux.Identity.Infrastructure\Autolux.Identity.Infrastructure.csproj", "{7EBCEA71-E730-488C-9EDF-D124D6A8C80F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autolux.Identity.Api", "Identity\src\Autolux.Identity.Api\Autolux.Identity.Api.csproj", "{6EF4A7A9-B80D-D0FE-EEE8-BB71F0F0D5D5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{7EBCEA71-E730-488C-9EDF-D124D6A8C80F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7EBCEA71-E730-488C-9EDF-D124D6A8C80F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7EBCEA71-E730-488C-9EDF-D124D6A8C80F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EF4A7A9-B80D-D0FE-EEE8-BB71F0F0D5D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EF4A7A9-B80D-D0FE-EEE8-BB71F0F0D5D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EF4A7A9-B80D-D0FE-EEE8-BB71F0F0D5D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EF4A7A9-B80D-D0FE-EEE8-BB71F0F0D5D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -90,6 +96,7 @@ Global
 		{34E015E5-38D4-4E02-B5C6-8D0E93AA195F} = {A2A84EB4-7B57-4F9E-84EC-EEC44AB7DD60}
 		{B9082195-721A-43B0-8168-793F14EB43EF} = {34E015E5-38D4-4E02-B5C6-8D0E93AA195F}
 		{7EBCEA71-E730-488C-9EDF-D124D6A8C80F} = {2B4EDE25-43CE-465E-9B05-D9998250E4C5}
+		{6EF4A7A9-B80D-D0FE-EEE8-BB71F0F0D5D5} = {2B4EDE25-43CE-465E-9B05-D9998250E4C5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {08F455BA-14A9-4C24-8589-C04E1DA1B1A1}

@@ -21,6 +21,8 @@ public class User : BaseEntity
 
     public IEnumerable<Claim> Claims => UserClaims.Select(x => x.Claim);
 
+    private User() { }
+
     public User(string email, string firstName, string lastName, bool isStaff = true)
     {
         if (string.IsNullOrWhiteSpace(email)) throw new ArgumentException($"{nameof(email)} is required");
