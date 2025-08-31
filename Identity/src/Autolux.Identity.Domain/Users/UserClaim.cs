@@ -10,11 +10,11 @@ public class UserClaim
         if (userId == Guid.Empty) throw new ArgumentException($"{nameof(userId)} is required");
         if (claimId == Guid.Empty) throw new ArgumentException($"{nameof(claimId)} is required");
         UserId = userId;
-        RoleId = claimId;
+        ClaimId = claimId;
     }
 
     public Guid UserId { get; private set; }
-    public Guid RoleId { get; private set; }
+    public Guid ClaimId { get; private set; }
     public bool IsDeleted { get; private set; } = false;
 
     public DateTime Created { get; set; } = DateTime.UtcNow;
