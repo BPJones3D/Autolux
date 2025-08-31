@@ -4,6 +4,7 @@ using Autolux.CoreApp.Api.Setup;
 using Autolux.CoreApp.Domain.Cars;
 using Autolux.CoreApp.Infrastructure.Setup;
 using Autolux.CoreApp.Models.Cars;
+using Autolux.Identity.Api.Setup;
 using FluentValidation.AspNetCore;
 using System.Text.Json.Serialization;
 
@@ -37,6 +38,7 @@ builder.Services.AddSwaggerConfigurations();
 builder.Services.AddInfrastructureServices();
 builder.Services.AddCoreAppServices();
 builder.Services.AddApiServices();
+builder.Services.AddIdentityServices();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.InitializerFluentValidation();
 
@@ -54,4 +56,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 await app.Initialize();
+await app.InitializeIdentity();
 await app.RunAsync();
