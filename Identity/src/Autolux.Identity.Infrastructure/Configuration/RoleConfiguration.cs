@@ -12,10 +12,6 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
         builder.Property(x => x.Name).IsRequired();
         builder.Property(x => x.NormalizedName).IsRequired();
 
-        builder.Ignore(x => x.UserRoles);
-
-        builder.Property(x => x.IsDeleted).HasDefaultValue(false);
-
         builder.HasIndex(x => x.NormalizedName);
 
         builder.HasKey(x => x.Id);

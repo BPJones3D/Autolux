@@ -1,31 +1,31 @@
-﻿using Autolux.Identity.Domain.Claims;
-using Autolux.SharedKernel.SharedObjects;
+﻿//using Autolux.Identity.Domain.Claims;
+//using Autolux.SharedKernel.SharedObjects;
 
-namespace Autolux.Identity.Infrastructure.Seeds;
+//namespace Autolux.Identity.Infrastructure.Seeds;
 
-public static class ClaimSeed
-{
-    public static List<Claim> GenerateClaimsForAdmin()
-    {
-        var claims = new List<Claim>();
+//public static class ClaimSeed
+//{
+//    public static List<Claim> GenerateClaimsForAdmin()
+//    {
+//        var claims = new List<Claim>();
 
-        foreach (var permissionKey in PermissionKey.List.OrderBy(x => x.Value))
-        {
-            claims.Add(new Claim(permissionKey, true));
-        }
+//        foreach (var permissionKey in PermissionKey.List.OrderBy(x => x.Value))
+//        {
+//            claims.Add(new Claim(permissionKey, true));
+//        }
 
-        return claims;
-    }
+//        return claims;
+//    }
 
-    public static List<Claim> GenerateClaims(IEnumerable<int> selectedClaimIds)
-    {
-        var claims = new List<Claim>();
+//    public static List<Claim> GenerateClaims(IEnumerable<int> selectedClaimIds)
+//    {
+//        var claims = new List<Claim>();
 
-        foreach (var permissionKey in PermissionKey.List.OrderBy(x => x.Value))
-        {
-            claims.Add(new Claim(permissionKey, selectedClaimIds.Contains(permissionKey.Value)));
-        }
+//        foreach (var permissionKey in PermissionKey.List.OrderBy(x => x.Value))
+//        {
+//            claims.Add(new Claim(permissionKey, selectedClaimIds.Contains(permissionKey.Value)));
+//        }
 
-        return claims;
-    }
-}
+//        return claims;
+//    }
+//}

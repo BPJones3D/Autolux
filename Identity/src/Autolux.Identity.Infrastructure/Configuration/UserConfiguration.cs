@@ -13,11 +13,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(x => x.NormalizedEmail).IsRequired();
         builder.Property(x => x.Password).IsRequired();
 
-        builder.Ignore(x => x.Roles);
-        builder.Ignore(x => x.Claims);
-
-        builder.Property(x => x.IsDeleted).HasDefaultValue(false);
-
         builder.HasIndex(x => x.NormalizedEmail);
 
         builder.HasKey(x => x.Id);

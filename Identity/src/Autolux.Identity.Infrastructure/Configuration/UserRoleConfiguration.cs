@@ -9,8 +9,8 @@ public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
     {
         builder.ToTable(nameof(UserRole));
 
-        builder.Property(x => x.IsDeleted).HasDefaultValue(false);
-
         builder.HasKey(x => new { x.UserId, x.RoleId });
+
+        //builder.HasOne(x => x.User).WithMany(x => x.UserRoles).HasForeignKey(x => x.RoleId);
     }
 }

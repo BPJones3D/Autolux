@@ -1,16 +1,15 @@
-﻿using Autolux.Identity.Domain.Claims;
+﻿using Autolux.Identity.Domain.Permissions;
 using Autolux.Identity.Domain.Roles;
-using Autolux.Identity.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace Autolux.Identity.Infrastructure;
 public class IdentityDbContext(DbContextOptions<IdentityDbContext> options) : DbContext(options)
 {
-    public DbSet<User> Users { get; set; }
+    //public DbSet<User> Users { get; set; }
     public DbSet<Role> Roles { get; set; }
-    public DbSet<Claim> Claims { get; set; }
-    public DbSet<UserRole> UserRoles { get; set; }
-    public DbSet<UserClaim> UserClaims { get; set; }
+    public DbSet<Permission> Permissions { get; set; }
+    //public DbSet<UserRole> UserRoles { get; set; }
+    //public DbSet<RolePermission> RolePermissions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -13,6 +13,6 @@ public static class IdentityServices
         using var scope = serviceProvider.CreateScope();
 
         var identityDbInitializer = scope.ServiceProvider.GetRequiredService<IdentityDbInitializer>();
-        await identityDbInitializer.SeedAsync();
+        //await identityDbInitializer.SeedAsync();
     }
 }

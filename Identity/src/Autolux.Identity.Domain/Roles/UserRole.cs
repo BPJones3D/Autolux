@@ -1,8 +1,7 @@
 ﻿using Autolux.Identity.Domain.Users;
-using Autolux.SharedKernel.BaseClasses;
 
 namespace Autolux.Identity.Domain.Roles;
-public class UserRole : BaseEntity
+public class UserRole
 {
     private UserRole() { }
     public UserRole(Guid userId, Guid roleId)

@@ -13,7 +13,7 @@ public class User : BaseEntity
     public IEnumerable<UserRole> UserRoles => _userRoles.AsEnumerable();
     private readonly List<UserRole> _userRoles = [];
 
-    public IEnumerable<Role> Roles => UserRoles.Select(x => x.Role);
+    //public IEnumerable<Role> Roles => UserRoles.Select(x => x.Role);
 
     private User() { }
 

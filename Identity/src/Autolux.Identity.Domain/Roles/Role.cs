@@ -1,4 +1,5 @@
-﻿using Autolux.SharedKernel.BaseClasses;
+﻿using Autolux.Identity.Domain.Permissions;
+using Autolux.SharedKernel.BaseClasses;
 
 namespace Autolux.Identity.Domain.Roles;
 public class Role : BaseEntity
@@ -9,6 +10,9 @@ public class Role : BaseEntity
 
     public IEnumerable<UserRole> UserRoles => _userRoles.AsEnumerable();
     private readonly List<UserRole> _userRoles = [];
+
+    public IEnumerable<RolePermission> RolePermissions => _rolePermissions.AsEnumerable();
+    private readonly List<RolePermission> _rolePermissions = [];
 
     private Role() { }
     public Role(string name, string description)
@@ -22,5 +26,13 @@ public class Role : BaseEntity
         Name = name;
         NormalizedName = name.Normalize().ToUpperInvariant();
         Description = description;
+    }
+    public void ClearAndAddPermissions(IEnumerable<Permission>? permissions)
+    {
+        if (permissions is null) return;
+
+        _rolePermissions.Clear();
+
+        _rolePermissions.AddRange(permissions.Where(x => x.Value).Select(x => new RolePermission(x)));
     }
 }
