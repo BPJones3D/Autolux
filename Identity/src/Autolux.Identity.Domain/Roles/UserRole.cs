@@ -1,7 +1,8 @@
 ﻿using Autolux.Identity.Domain.Users;
+using Autolux.SharedKernel.BaseClasses;
 
 namespace Autolux.Identity.Domain.Roles;
-public class UserRole
+public class UserRole : BaseEntity
 {
     private UserRole() { }
     public UserRole(Guid userId, Guid roleId)
@@ -14,12 +15,6 @@ public class UserRole
 
     public Guid UserId { get; private set; }
     public Guid RoleId { get; private set; }
-    public bool IsDeleted { get; private set; } = false;
-
-    public DateTime Created { get; set; } = DateTime.UtcNow;
-    public Guid CreatedBy { get; set; } = Guid.Empty;
-    public DateTime Modified { get; set; } = DateTime.UtcNow;
-    public Guid ModifiedBy { get; set; } = Guid.Empty;
 
     public User User { get; private set; } = default!;
     public Role Role { get; private set; } = default!;

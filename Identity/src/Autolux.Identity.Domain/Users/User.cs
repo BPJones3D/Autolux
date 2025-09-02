@@ -1,5 +1,4 @@
-﻿using Autolux.Identity.Domain.Claims;
-using Autolux.Identity.Domain.Roles;
+﻿using Autolux.Identity.Domain.Roles;
 using Autolux.SharedKernel.BaseClasses;
 using System.Net.Mail;
 
@@ -15,11 +14,6 @@ public class User : BaseEntity
     private readonly List<UserRole> _userRoles = [];
 
     public IEnumerable<Role> Roles => UserRoles.Select(x => x.Role);
-
-    public IEnumerable<UserClaim> UserClaims => _userClaims.AsEnumerable();
-    private readonly List<UserClaim> _userClaims = [];
-
-    public IEnumerable<Claim> Claims => UserClaims.Select(x => x.Claim);
 
     private User() { }
 
@@ -58,23 +52,6 @@ public class User : BaseEntity
         foreach (var roleId in roleIds)
         {
             AssignToRole(roleId);
-        }
-    }
-    public void AddClaim(Guid claimId)
-    {
-        if (!UserClaims.Any(x => x.ClaimId == claimId))
-        {
-            var userClaim = new UserClaim(Id, claimId);
-            _userClaims.Add(userClaim);
-        }
-    }
-    public void AddClaims(IEnumerable<Guid> claimIds)
-    {
-        if (claimIds is null) return;
-
-        foreach (var claimId in claimIds)
-        {
-            AddClaim(claimId);
         }
     }
 }
