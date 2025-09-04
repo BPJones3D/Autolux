@@ -2,6 +2,7 @@
 using Autolux.Identity.Api.Features.Users;
 using Autolux.Identity.Infrastructure;
 using Autolux.Identity.Infrastructure.Authentication;
+using Autolux.Identity.Infrastructure.Respositories.Users;
 using Autolux.Identity.Infrastructure.Roles;
 using System.Reflection;
 
@@ -13,6 +14,8 @@ public static class IdentityServices
     {
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IRoleService, RoleService>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IUserService, UserService>();
         services.AddScoped<IdentityDbInitializer>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
 

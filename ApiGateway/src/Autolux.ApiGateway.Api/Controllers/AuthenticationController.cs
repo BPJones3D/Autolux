@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Autolux.Identity.Api.Features.Users;
+using Autolux.Identity.Models.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -8,7 +10,7 @@ using System.Text;
 namespace Autolux.ApiGateway.Api.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-public class AuthenticationController : ControllerBase
+public class AuthenticationController(IUserService userService) : ControllerBase
 {
     /// <summary>
     /// Authenticate and generate a new JWT
@@ -18,11 +20,28 @@ public class AuthenticationController : ControllerBase
     [AllowAnonymous]
     [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public IActionResult GetTokenAsync([FromBody] AuthenticationModel authenticationModel, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> GetTokenAsync([FromBody] AuthenticationModel authenticationModel, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
         if (authenticationModel == null) return BadRequest($"{nameof(authenticationModel)} is required");
+
+        var user = await userService.Authenticate(authenticationModel.Username, authenticationModel.Password, cancellationToken);
+        if (!user.IsAuthenticated)
+            return Unauthorized();
+
+        var roles = new List<Claim>();
+        var claims = new List<Claim>();
+
+        foreach (var role in user.Roles)
+        {
+            roles.Add(new Claim(ClaimTypes.Role, role.Name));
+            foreach (var permission in role.Permissions)
+            {
+                if (!claims.Any(c => c.Value == $"{permission.PermissionId}"))
+                    claims.Add(new Claim(ClaimTypes.NameIdentifier, $"{permission.PermissionId}"));
+            }
+        }
 
         var tokenHandler = new JwtSecurityTokenHandler();
         //var encryptionKey = configuration.GetValue<string>("JWTEncryptionKey");
@@ -30,13 +49,7 @@ public class AuthenticationController : ControllerBase
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(new Claim[]
-            {
-                            new Claim(ClaimTypes.NameIdentifier, "123"),
-                            new Claim(ClaimTypes.Name, $"Peter Jones"),
-                            //new Claim(ClaimTypes.Role, "GlobalAdmin"),
-                            new Claim(ClaimTypes.Role, "Admin")
-            }),
+            Subject = new ClaimsIdentity(roles.Concat(claims).AsEnumerable()),
             Expires = DateTime.UtcNow.AddDays(1),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
