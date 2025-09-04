@@ -1,15 +1,15 @@
 ﻿namespace Autolux.Identity.Infrastructure.Seeds;
 using Autolux.Identity.Domain.Users;
+using Autolux.Identity.Infrastructure.Authentication;
 
 public static class UserSeed
 {
-    public static List<User> GetGlobalAdminUsers()
+    public static List<User> GetGlobalAdminUsers(IPasswordHasher passwordHasher)
     {
-        var users = new List<User>();
-
-        users.Add(new User("bjoneswix@gmail.com", "bjoneswix@gmail.com", "Ben", "Jones", "en-US", true));
-        users.Add(new User("peter_jones_glass@hotmail.com", "peter_jones_glass@hotmail.com", "Peter A", "Jones", "en-US", true));
-
-        return users;
+        return
+        [
+            new("bjoneswix@gmail.com", passwordHasher.Hash("bjoneswix@gmail.com"), "Ben", "Jones", "en-US", true),
+            new("peter_jones_glass@hotmail.com", passwordHasher.Hash("peter_jones_glass@hotmail.com"), "Peter A", "Jones", "en-US", true)
+        ];
     }
 }

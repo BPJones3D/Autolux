@@ -1,5 +1,6 @@
 ﻿using Autolux.Identity.Api.Roles;
 using Autolux.Identity.Infrastructure;
+using Autolux.Identity.Infrastructure.Authentication;
 using Autolux.Identity.Infrastructure.Roles;
 using System.Reflection;
 
@@ -12,6 +13,7 @@ public static class IdentityServices
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IRoleService, RoleService>();
         services.AddScoped<IdentityDbInitializer>();
+        services.AddScoped<IPasswordHasher, PasswordHasher>();
 
         services.AddAutoMapper(cfg =>
         {

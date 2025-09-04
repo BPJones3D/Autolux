@@ -1,8 +1,7 @@
 ﻿using System.Security.Cryptography;
 
-namespace Autolux.Identity.Api.Authentication;
-
-internal sealed class PasswordHasher : IPasswordHasher
+namespace Autolux.Identity.Infrastructure.Authentication;
+public sealed class PasswordHasher : IPasswordHasher
 {
     private const int SaltSize = 16;
     private const int HashSize = 32;

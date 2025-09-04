@@ -1,5 +1,4 @@
-﻿namespace Autolux.Identity.Api.Authentication;
-
+﻿namespace Autolux.Identity.Infrastructure.Authentication;
 public interface IPasswordHasher
 {
     string Hash(string password);
