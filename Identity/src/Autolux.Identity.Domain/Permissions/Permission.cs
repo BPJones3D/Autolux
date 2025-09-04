@@ -3,13 +3,14 @@
 namespace Autolux.Identity.Domain.Permissions;
 public class Permission
 {
-    public int Id { get; private set; }
+    private Permission() { }
+
+    public PermissionKey Key { get; private set; }
     public bool Value { get; private set; }
 
-    private Permission() { }
-    public Permission(PermissionKey permissionKey, bool value = false)
+    public Permission(PermissionKey key, bool value = false)
     {
-        Id = permissionKey.Value;
+        Key = key;
         Value = value;
     }
 }

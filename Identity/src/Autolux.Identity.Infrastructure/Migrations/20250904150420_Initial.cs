@@ -12,19 +12,6 @@ namespace Autolux.Identity.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Permission",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Value = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Permission", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Role",
                 columns: table => new
                 {
@@ -32,7 +19,7 @@ namespace Autolux.Identity.Infrastructure.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NormalizedName = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Modified = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -50,10 +37,14 @@ namespace Autolux.Identity.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     NormalizedEmail = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NormalizedUsername = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PreferredLanguageISOCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsStaff = table.Column<bool>(type: "bit", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Modified = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -68,18 +59,15 @@ namespace Autolux.Identity.Infrastructure.Migrations
                 name: "RolePermission",
                 columns: table => new
                 {
-                    PermissionId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PermissionKey = table.Column<int>(type: "int", nullable: false),
+                    PermissionValue = table.Column<bool>(type: "bit", nullable: false),
                     RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RolePermission", x => new { x.RoleId, x.PermissionId });
-                    table.ForeignKey(
-                        name: "FK_RolePermission_Permission_PermissionId",
-                        column: x => x.PermissionId,
-                        principalTable: "Permission",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_RolePermission", x => x.Id);
                     table.ForeignKey(
                         name: "FK_RolePermission_Role_RoleId",
                         column: x => x.RoleId,
@@ -93,7 +81,12 @@ namespace Autolux.Identity.Infrastructure.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Modified = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -118,9 +111,15 @@ namespace Autolux.Identity.Infrastructure.Migrations
                 column: "NormalizedName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RolePermission_PermissionId",
+                name: "IX_RolePermission_RoleId",
                 table: "RolePermission",
-                column: "PermissionId");
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_Email",
+                table: "User",
+                column: "Email",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_NormalizedEmail",
@@ -141,9 +140,6 @@ namespace Autolux.Identity.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserRole");
-
-            migrationBuilder.DropTable(
-                name: "Permission");
 
             migrationBuilder.DropTable(
                 name: "Role");

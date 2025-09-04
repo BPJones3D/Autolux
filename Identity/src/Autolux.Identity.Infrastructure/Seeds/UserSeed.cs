@@ -1,17 +1,15 @@
-﻿//using Autolux.Identity.Domain.Users;
+﻿namespace Autolux.Identity.Infrastructure.Seeds;
+using Autolux.Identity.Domain.Users;
 
-//namespace Autolux.Identity.Infrastructure.Seeds;
-//public class UserSeed
-//{
-//    const string defaultPassword = "P@ssw0rd!";
-//    public static List<User> GetUsers()
-//    {
-//        var user1 = new User("bjoneswix@gmail.com", "Ben", "Jones", true);
-//        user1.SetPassword(defaultPassword);
+public static class UserSeed
+{
+    public static List<User> GetGlobalAdminUsers()
+    {
+        var users = new List<User>();
 
-//        var user2 = new User("peter_jones_glass@hotmail.com", "Peter A", "Jones", true);
-//        user2.SetPassword(defaultPassword);
+        users.Add(new User("bjoneswix@gmail.com", "Ben", "Jones", "en-US", true));
+        users.Add(new User("peter_jones_glass@hotmail.com", "Peter A", "Jones", "en-US", true));
 
-//        return [user1, user2];
-//    }
-//}
+        return users;
+    }
+}

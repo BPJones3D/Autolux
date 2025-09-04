@@ -1,20 +1,24 @@
 ﻿using Autolux.Identity.Domain.Permissions;
+using Autolux.SharedKernel.SharedObjects;
 
 namespace Autolux.Identity.Domain.Roles;
 public class RolePermission
 {
-    public int PermissionId { get; private set; } = 0;
-    public Permission Permission { get; private set; } = default!;
+    public int Id { get; private set; }
+    public Permission Permission { get; set; }
 
-    public Guid RoleId { get; private set; } = Guid.Empty;
-    public Role Role { get; private set; } = default!;
+    public Guid RoleId { get; private set; }
+    public Role Role { get; private set; }
 
     private RolePermission() { }
-
+    public RolePermission(PermissionKey permissionKey, bool permissionValue)
+    {
+        Permission = new Permission(permissionKey, permissionValue);
+    }
 
     public RolePermission(Permission permission)
     {
-        if (permission == null) throw new ArgumentException($"{nameof(permission)} is required");
+        if (permission is null) throw new ArgumentException($"{nameof(permission)} is required");
 
         Permission = permission;
     }

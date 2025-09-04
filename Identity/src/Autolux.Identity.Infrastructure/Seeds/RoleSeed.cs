@@ -1,18 +1,22 @@
-﻿//using Autolux.Identity.Domain.Roles;
+﻿using Autolux.Identity.Domain.Roles;
 
-//namespace Autolux.Identity.Infrastructure.Seeds;
-//public static class RoleSeed
-//{
-//    public static string GlobalAdminRoleNameNormalized { get => "GlobalAdmin".Normalize().ToUpperInvariant(); }
+namespace Autolux.Identity.Infrastructure.Seeds;
+public static class RoleSeed
+{
+    public static string GlobalAdminRoleNameNormalized = "GlobalAdmin".Normalize().ToUpperInvariant();
 
-//    public static List<Role> GetRoles()
-//    {
-//        return
-//            [
-//                new Role(GlobalAdminRoleNameNormalized, "Global admin role"),
-//                new Role("Admin", "Admin role"),
-//                new Role("RetailerAdmin", "Retailer admin role"),
-//                new Role("Retailer", "Retailer role"),
-//            ];
-//    }
-//}
+    public static List<Role> GetRoles()
+    {
+        var permissions = PermissionSeed.GeneratePermissionsForAdmin();
+        var globalAdminRole = new Role("GlobalAdmin", "Global admin role");
+        globalAdminRole.ClearAndAddPermissions(permissions);
+
+        return new List<Role>
+            {
+                globalAdminRole,
+                new Role("Admin", "Admin role"),
+                new Role("RetailerAdmin", "Retailer admin role"),
+                new Role("Retailer", "Retailer role"),
+            };
+    }
+}

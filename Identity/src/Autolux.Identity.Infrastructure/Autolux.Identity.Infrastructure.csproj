@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Autolux.Identity.Domain\Autolux.Identity.Domain.csproj" />
+    <ProjectReference Include="..\Autolux.Identity.Models\Autolux.Identity.Models.csproj" />
   </ItemGroup>
 
 </Project>

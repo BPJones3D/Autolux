@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Autolux.Identity.Infrastructure.Migrations
 {
     [DbContext(typeof(IdentityDbContext))]
-    [Migration("20250902135127_Initial")]
+    [Migration("20250904150420_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -24,22 +24,6 @@ namespace Autolux.Identity.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("Autolux.Identity.Domain.Permissions.Permission", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("Value")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Permission", (string)null);
-                });
 
             modelBuilder.Entity("Autolux.Identity.Domain.Roles.Role", b =>
                 {
@@ -58,7 +42,9 @@ namespace Autolux.Identity.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("datetime2");
@@ -83,15 +69,18 @@ namespace Autolux.Identity.Infrastructure.Migrations
 
             modelBuilder.Entity("Autolux.Identity.Domain.Roles.RolePermission", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("PermissionId")
-                        .HasColumnType("int");
+                    b.HasKey("Id");
 
-                    b.HasKey("RoleId", "PermissionId");
-
-                    b.HasIndex("PermissionId");
+                    b.HasIndex("RoleId");
 
                     b.ToTable("RolePermission", (string)null);
                 });
@@ -102,6 +91,23 @@ namespace Autolux.Identity.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("UserId", "RoleId");
@@ -125,13 +131,18 @@ namespace Autolux.Identity.Infrastructure.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("IsStaff")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
@@ -148,11 +159,26 @@ namespace Autolux.Identity.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("NormalizedUsername")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PreferredLanguageISOCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.HasIndex("NormalizedEmail");
 
@@ -161,19 +187,35 @@ namespace Autolux.Identity.Infrastructure.Migrations
 
             modelBuilder.Entity("Autolux.Identity.Domain.Roles.RolePermission", b =>
                 {
-                    b.HasOne("Autolux.Identity.Domain.Permissions.Permission", "Permission")
-                        .WithMany()
-                        .HasForeignKey("PermissionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Autolux.Identity.Domain.Roles.Role", "Role")
                         .WithMany("RolePermissions")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Permission");
+                    b.OwnsOne("Autolux.Identity.Domain.Permissions.Permission", "Permission", b1 =>
+                        {
+                            b1.Property<int>("RolePermissionId")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("Key")
+                                .HasColumnType("int")
+                                .HasColumnName("PermissionKey");
+
+                            b1.Property<bool>("Value")
+                                .HasColumnType("bit")
+                                .HasColumnName("PermissionValue");
+
+                            b1.HasKey("RolePermissionId");
+
+                            b1.ToTable("RolePermission");
+
+                            b1.WithOwner()
+                                .HasForeignKey("RolePermissionId");
+                        });
+
+                    b.Navigation("Permission")
+                        .IsRequired();
 
                     b.Navigation("Role");
                 });

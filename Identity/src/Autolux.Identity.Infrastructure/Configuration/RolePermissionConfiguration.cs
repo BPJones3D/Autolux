@@ -1,4 +1,5 @@
 ﻿using Autolux.Identity.Domain.Roles;
+using Autolux.SharedKernel.SharedObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -10,8 +11,16 @@ public class RolePermissionConfiguration : IEntityTypeConfiguration<RolePermissi
     {
         builder.ToTable(nameof(RolePermission));
 
-        builder.HasKey(x => new { x.RoleId, x.PermissionId });
+        builder.OwnsOne(x => x.Permission, rp =>
+        {
+            rp.Property(p => p.Value).HasColumnName("PermissionValue");
+            rp.Property(p => p.Key)
+                .HasColumnName("PermissionKey")
+                .HasConversion(p => p.Value, p => PermissionKey.FromValue(p));
+        });
 
-        builder.HasOne(x => x.Role).WithMany(x => x.RolePermissions).HasForeignKey(x => x.RoleId);
+        builder.HasQueryFilter(x => !x.Role.IsDeleted);
+
+        builder.HasKey(x => x.Id);
     }
 }
