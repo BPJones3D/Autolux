@@ -27,7 +27,9 @@ public class UserRepository(IdentityDbContext dbContext) : IUserRepository
         var user = await dbContext.Users
             .Where(x => x.NormalizedEmail == email.Normalize().ToUpperInvariant())
             .Include(x => x.UserRoles)
-            .ThenInclude(x => x.Role)
+                .ThenInclude(x => x.Role)
+                    .ThenInclude(x => x.RolePermissions)
+                        .ThenInclude(x => x.Permission)
             .FirstOrDefaultAsync(cancellationToken);
 
         return user;

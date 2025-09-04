@@ -45,7 +45,7 @@ public class AuthenticationController(IUserService userService) : ControllerBase
 
         var tokenHandler = new JwtSecurityTokenHandler();
         //var encryptionKey = configuration.GetValue<string>("JWTEncryptionKey");
-        var key = Encoding.ASCII.GetBytes("My JWT Encryption Key");
+        var key = Encoding.ASCII.GetBytes("My JWT Encryption Key-My JWT Encryption Key-My JWT Encryption Key-My JWT Encryption Key-My JWT Encryption Key-My JWT Encryption Key-");
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
