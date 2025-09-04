@@ -1,3 +1,4 @@
+using Autolux.ApiGateway.Api.Configuration.Authorization;
 using Autolux.ApiGateway.Api.Setup;
 using Autolux.ApiGateway.Api.Setup.Extensions;
 using Autolux.CoreApp.Api.Setup;
@@ -35,6 +36,9 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.CreateMap<Car, CarModel>();
     cfg.CreateMap<Car, CarSummaryModel>();
 });
+
+builder.Services.AddJwtAuthentication(configuration);
+builder.Services.AddPolicies();
 builder.Services.AddSwaggerConfiguration();
 builder.Services.AddInfrastructureServices();
 builder.Services.AddCoreAppServices();
