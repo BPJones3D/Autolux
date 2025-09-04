@@ -11,6 +11,7 @@ public static class ApiGatewayServices
 {
     public static void BindConfigurations(this IConfiguration configuration)
     {
+        configuration.Bind(ApiGatewaySettings.CONFIG_NAME, ApiGatewaySettings.Instance);
         configuration.Bind(CoreDbSettings.CONFIG_NAME, CoreDbSettings.Instance);
         configuration.Bind(IdentityDbSettings.CONFIG_NAME, IdentityDbSettings.Instance);
     }
