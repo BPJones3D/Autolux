@@ -3,7 +3,9 @@
 namespace Autolux.Identity.Infrastructure.Seeds;
 public static class RoleSeed
 {
-    public static string GlobalAdminRoleNameNormalized = "GlobalAdmin".Normalize().ToUpperInvariant();
+    private static string _globalAdminRoleNameNormalized = "GlobalAdmin".Normalize().ToUpperInvariant();
+
+    public static string GlobalAdminRoleNameNormalized => _globalAdminRoleNameNormalized;
 
     public static List<Role> GetRoles()
     {

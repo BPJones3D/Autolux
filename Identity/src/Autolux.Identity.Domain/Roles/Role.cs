@@ -8,9 +8,9 @@ public class Role : BaseEntity
 {
     private Role() { }
 
-    public string Name { get; private set; }
-    public string NormalizedName { get; private set; }
-    public string Description { get; set; }
+    public string Name { get; private set; } = default!;
+    public string NormalizedName { get; private set; } = default!;
+    public string Description { get; set; } = default!;
 
     public IEnumerable<UserRole> UserRoles => _userRoles.AsEnumerable();
     private readonly List<UserRole> _userRoles = new List<UserRole>();
@@ -21,18 +21,19 @@ public class Role : BaseEntity
     public IEnumerable<User> Users => UserRoles.Select(x => x.User);
     public IEnumerable<Permission> SelectedPermissions => RolePermissions.Select(x => x.Permission).Where(x => x.Value);
     //public IEnumerable<Permission> Permissions => PermissionSeed.GeneratePermissions(SelectedPermissions.Select(x => x.Key.Value));
-    public IEnumerable<Permission> Permissions
-    {
-        get
-        {
-            var permissions = new List<Permission>();
-            foreach (var item in PermissionKey.List)
-            {
-                permissions.Add(new Permission(item, SelectedPermissions.Any(x => x.Key == item && x.Value)));
-            }
-            return permissions;
-        }
-    }
+    //public IEnumerable<Permission> Permissions
+    //{
+    //    get
+    //    {
+    //        var permissions = new List<Permission>();
+    //        foreach (var item in PermissionKey.List)
+    //        {
+    //            permissions.Add(new Permission(item, SelectedPermissions.Any(x => x.Key == item && x.Value)));
+    //        }
+    //        return permissions;
+    //    }
+    //}
+    public IEnumerable<Permission> Permissions => SelectedPermissions.Select(x => x);
 
     public Role(string name, string description)
     {

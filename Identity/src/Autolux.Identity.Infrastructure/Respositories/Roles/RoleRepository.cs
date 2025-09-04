@@ -3,14 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Autolux.Identity.Infrastructure.Respositories.Roles;
 
-public class RoleRepository : IRoleRepository
+public class RoleRepository(IdentityDbContext dbContext) : IRoleRepository
 {
-    private readonly IdentityDbContext _dbContext;
-
-    public RoleRepository(IdentityDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private readonly IdentityDbContext _dbContext = dbContext;
 
     public async Task<Role> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {

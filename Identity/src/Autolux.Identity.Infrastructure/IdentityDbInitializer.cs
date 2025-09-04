@@ -1,20 +1,10 @@
-﻿//using Autolux.Identity.Infrastructure.Seeds;
-//using Microsoft.EntityFrameworkCore;
-
-using Autolux.Identity.Infrastructure.Authentication;
+﻿using Autolux.Identity.Infrastructure.Authentication;
 using Autolux.Identity.Infrastructure.Seeds;
 using Microsoft.EntityFrameworkCore;
 
 namespace Autolux.Identity.Infrastructure;
 public class IdentityDbInitializer(IdentityDbContext dbContext, IPasswordHasher passwordHasher)
 {
-    //private readonly IdentityDbContext _dbContext;
-
-    //public IdentityDbInitializer(IdentityDbContext dbContext)
-    //{
-    //    _dbContext = dbContext;
-    //}
-
     /// <summary>
     /// Seed the identity database
     /// </summary>
@@ -49,6 +39,8 @@ public class IdentityDbInitializer(IdentityDbContext dbContext, IPasswordHasher 
             // then we'll just re-add all permissions automatically to the globaladmin role.
 
             var globalAdminRole = await dbContext.Roles.Include(x => x.RolePermissions).FirstOrDefaultAsync(x => x.NormalizedName == RoleSeed.GlobalAdminRoleNameNormalized);
+            if (globalAdminRole == null)
+                throw new ArgumentException("GlobalAdmin role not found");
 
             /* NOTE: GlobalAdmin permissions are ALWAYS reset to ensure all permissions. You'll need to manually configure permissions for other roles */
             var permissions = PermissionSeed.GeneratePermissionsForAdmin();
@@ -62,7 +54,7 @@ public class IdentityDbInitializer(IdentityDbContext dbContext, IPasswordHasher 
     {
         if (await dbContext.Users.CountAsync() == 0)
         {
-            var globalAdminRole = await dbContext.Roles.FirstOrDefaultAsync(x => x.NormalizedName == RoleSeed.GlobalAdminRoleNameNormalized);
+            var globalAdminRole = await dbContext.Roles.FirstOrDefaultAsync(x => x.NormalizedName == RoleSeed.GlobalAdminRoleNameNormalized) ?? throw new ArgumentException("GlobalAdmin role not found");
             var users = UserSeed.GetGlobalAdminUsers(passwordHasher);
 
             dbContext.Users.AddRange(users);

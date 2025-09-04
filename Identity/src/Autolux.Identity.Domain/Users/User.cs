@@ -36,8 +36,6 @@ public class User : BaseEntity
         PasswordHash = passwordHash ?? throw new ArgumentNullException(nameof(passwordHash));
         NormalizedUsername = Email.Normalize().ToUpperInvariant();
 
-        // Allow empty firstname and lastname. Initially admins may want to create the user just by typing the email address.
-        // Then, these values will be populated during the sign-up process by the user.
         Update(firstName, lastName, preferredLanguageISOCode, isStaff);
     }
 
