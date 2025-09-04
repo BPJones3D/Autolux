@@ -35,7 +35,7 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.CreateMap<Car, CarModel>();
     cfg.CreateMap<Car, CarSummaryModel>();
 });
-builder.Services.AddSwaggerConfigurations();
+builder.Services.AddSwaggerConfiguration();
 builder.Services.AddInfrastructureServices();
 builder.Services.AddCoreAppServices();
 builder.Services.AddApiServices();
