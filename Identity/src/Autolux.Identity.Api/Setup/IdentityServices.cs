@@ -1,4 +1,5 @@
-﻿using Autolux.Identity.Api.Roles;
+﻿using Autolux.Identity.Api.Features.Roles;
+using Autolux.Identity.Api.Features.Users;
 using Autolux.Identity.Infrastructure;
 using Autolux.Identity.Infrastructure.Authentication;
 using Autolux.Identity.Infrastructure.Roles;
@@ -17,7 +18,9 @@ public static class IdentityServices
 
         services.AddAutoMapper(cfg =>
         {
+            cfg.AddProfile<RolePermissionMappingProfile>();
             cfg.AddProfile<RoleMappingProfile>();
+            cfg.AddProfile<UserMappingProfile>();
         }, Assembly.GetExecutingAssembly());
     }
     public static async Task InitializeIdentityDbAsync(this IServiceProvider serviceProvider)

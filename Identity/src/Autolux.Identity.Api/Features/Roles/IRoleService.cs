@@ -1,6 +1,6 @@
 ﻿using Autolux.Identity.Models.Roles;
 
-namespace Autolux.Identity.Api.Roles;
+namespace Autolux.Identity.Api.Features.Roles;
 
 public interface IRoleService
 {

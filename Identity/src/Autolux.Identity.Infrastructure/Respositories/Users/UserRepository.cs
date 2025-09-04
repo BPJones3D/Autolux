@@ -11,20 +11,20 @@ public class UserRepository : IUserRepository
         _dbContext = dbContext;
     }
 
-    public async Task<User> GetByIdAsync(Guid id, CancellationToken cancellationToken)
-    {
-        cancellationToken.ThrowIfCancellationRequested();
+    //public async Task<User> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    //{
+    //    cancellationToken.ThrowIfCancellationRequested();
 
-        var user = await _dbContext.Users
-            .Where(x => x.Id == id)
-            .Include(x => x.UserRoles)
-            .ThenInclude(x => x.Role)
-            .FirstOrDefaultAsync(cancellationToken);
+    //    var user = await _dbContext.Users
+    //        .Where(x => x.Id == id)
+    //        .Include(x => x.UserRoles)
+    //        .ThenInclude(x => x.Role)
+    //        .FirstOrDefaultAsync(cancellationToken);
 
-        return user;
-    }
+    //    return user;
+    //}
 
-    public async Task<User> GetByEmailAsync(string email, CancellationToken cancellationToken)
+    public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
@@ -39,60 +39,60 @@ public class UserRepository : IUserRepository
         return user;
     }
 
-    public async Task<User> GetStaffByEmailAsync(string email, CancellationToken cancellationToken)
-    {
-        cancellationToken.ThrowIfCancellationRequested();
+    //public async Task<User> GetStaffByEmailAsync(string email, CancellationToken cancellationToken)
+    //{
+    //    cancellationToken.ThrowIfCancellationRequested();
 
-        if (string.IsNullOrEmpty(email)) throw new ArgumentException($"{nameof(email)} is required");
+    //    if (string.IsNullOrEmpty(email)) throw new ArgumentException($"{nameof(email)} is required");
 
-        var user = await _dbContext.Users
-            .Where(x => x.IsStaff)
-            .Where(x => x.NormalizedEmail == email.Normalize().ToUpperInvariant())
-            .Include(x => x.UserRoles)
-            .ThenInclude(x => x.Role)
-            .FirstOrDefaultAsync(cancellationToken);
+    //    var user = await _dbContext.Users
+    //        .Where(x => x.IsStaff)
+    //        .Where(x => x.NormalizedEmail == email.Normalize().ToUpperInvariant())
+    //        .Include(x => x.UserRoles)
+    //        .ThenInclude(x => x.Role)
+    //        .FirstOrDefaultAsync(cancellationToken);
 
-        return user;
-    }
+    //    return user;
+    //}
 
-    public async Task<List<User>> GetListAsync(CancellationToken cancellationToken)
-    {
-        cancellationToken.ThrowIfCancellationRequested();
+    //public async Task<List<User>> GetListAsync(CancellationToken cancellationToken)
+    //{
+    //    cancellationToken.ThrowIfCancellationRequested();
 
-        var count = await _dbContext.Users.CountAsync();
+    //    var count = await _dbContext.Users.CountAsync();
 
-        var data = await _dbContext.Users
-            .Include(x => x.UserRoles)
-            .ThenInclude(x => x.Role)
-            .ToListAsync(cancellationToken);
+    //    var data = await _dbContext.Users
+    //        .Include(x => x.UserRoles)
+    //        .ThenInclude(x => x.Role)
+    //        .ToListAsync(cancellationToken);
 
-        return data;
-    }
+    //    return data;
+    //}
 
-    public async Task<User> AddAsync(User user, CancellationToken cancellationToken)
-    {
-        cancellationToken.ThrowIfCancellationRequested();
+    //public async Task<User> AddAsync(User user, CancellationToken cancellationToken)
+    //{
+    //    cancellationToken.ThrowIfCancellationRequested();
 
-        _dbContext.Users.Add(user);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+    //    _dbContext.Users.Add(user);
+    //    await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return user;
-    }
+    //    return user;
+    //}
 
-    public async Task<User> UpdateAsync(User user, CancellationToken cancellationToken)
-    {
-        cancellationToken.ThrowIfCancellationRequested();
+    //public async Task<User> UpdateAsync(User user, CancellationToken cancellationToken)
+    //{
+    //    cancellationToken.ThrowIfCancellationRequested();
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+    //    await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return user;
-    }
+    //    return user;
+    //}
 
-    public async Task DeleteAsync(User user, CancellationToken cancellationToken)
-    {
-        cancellationToken.ThrowIfCancellationRequested();
+    //public async Task DeleteAsync(User user, CancellationToken cancellationToken)
+    //{
+    //    cancellationToken.ThrowIfCancellationRequested();
 
-        _dbContext.Users.Remove(user);
-        await _dbContext.SaveChangesAsync(cancellationToken);
-    }
+    //    _dbContext.Users.Remove(user);
+    //    await _dbContext.SaveChangesAsync(cancellationToken);
+    //}
 }

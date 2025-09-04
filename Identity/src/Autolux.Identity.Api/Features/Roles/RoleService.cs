@@ -2,7 +2,7 @@
 using Autolux.Identity.Models.Roles;
 using AutoMapper;
 
-namespace Autolux.Identity.Api.Roles;
+namespace Autolux.Identity.Api.Features.Roles;
 
 public class RoleService(IMapper mapper, IRoleRepository repository) : IRoleService
 {
