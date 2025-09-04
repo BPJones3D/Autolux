@@ -7,11 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="15.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Autolux.Identity.Infrastructure\Autolux.Identity.Infrastructure.csproj" />
+    <ProjectReference Include="..\Autolux.Identity.Models\Autolux.Identity.Models.csproj" />
   </ItemGroup>
 
 </Project>

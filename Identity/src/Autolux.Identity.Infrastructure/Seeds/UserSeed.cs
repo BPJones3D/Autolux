@@ -7,8 +7,8 @@ public static class UserSeed
     {
         var users = new List<User>();
 
-        users.Add(new User("bjoneswix@gmail.com", "Ben", "Jones", "en-US", true));
-        users.Add(new User("peter_jones_glass@hotmail.com", "Peter A", "Jones", "en-US", true));
+        users.Add(new User("bjoneswix@gmail.com", "bjoneswix@gmail.com", "Ben", "Jones", "en-US", true));
+        users.Add(new User("peter_jones_glass@hotmail.com", "peter_jones_glass@hotmail.com", "Peter A", "Jones", "en-US", true));
 
         return users;
     }

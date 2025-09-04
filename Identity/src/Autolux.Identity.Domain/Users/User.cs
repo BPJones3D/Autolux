@@ -25,7 +25,7 @@ public class User : BaseEntity
     public string FullName => $"{FirstName} {LastName}";
 
     private User() { }
-    public User(string email, string firstName, string lastName, string preferredLanguageISOCode = "en-US", bool isStaff = true)
+    public User(string email, string passwordHash, string firstName, string lastName, string preferredLanguageISOCode = "en-US", bool isStaff = true)
     {
         if (string.IsNullOrWhiteSpace(email)) throw new ArgumentException($"{nameof(email)} is required");
 
@@ -33,6 +33,7 @@ public class User : BaseEntity
         Email = emailAddress.Address;
         NormalizedEmail = Email.Normalize().ToUpperInvariant();
         Username = emailAddress.Address;
+        PasswordHash = passwordHash ?? throw new ArgumentNullException(nameof(passwordHash));
         NormalizedUsername = Email.Normalize().ToUpperInvariant();
 
         // Allow empty firstname and lastname. Initially admins may want to create the user just by typing the email address.

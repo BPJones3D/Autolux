@@ -18,8 +18,9 @@ public class IdentityDbInitializer
     /// Seed the identity database
     /// </summary>
     /// <param name="retry">Number of attempts to seed the database.</param>
-    public async Task Seed(int retry = 0)
+    public async Task SeedAsync(int retry = 0)
     {
+        await _dbContext.Database.EnsureCreatedAsync();
         try
         {
             await SeedRoles();
@@ -29,7 +30,7 @@ public class IdentityDbInitializer
         {
             if (retry > 0)
             {
-                await Seed(retry - 1);
+                await SeedAsync(retry - 1);
             }
         }
     }

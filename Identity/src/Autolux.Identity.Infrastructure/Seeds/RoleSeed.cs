@@ -11,12 +11,12 @@ public static class RoleSeed
         var globalAdminRole = new Role("GlobalAdmin", "Global admin role");
         globalAdminRole.ClearAndAddPermissions(permissions);
 
-        return new List<Role>
-            {
+        return
+            [
                 globalAdminRole,
                 new Role("Admin", "Admin role"),
                 new Role("RetailerAdmin", "Retailer admin role"),
                 new Role("Retailer", "Retailer role"),
-            };
+            ];
     }
 }
