@@ -11,6 +11,7 @@ public class RoleMappingProfile : Profile
         CreateMap<Role, RoleDto>()
             .ForMember(dest => dest.Permissions, opt => opt.MapFrom(src => src.RolePermissions.Select(p => new RolePermissionDto
             {
+                RoleId = p.RoleId,
                 PermissionId = p.Permission.Key.Value
             }).ToList()));
     }

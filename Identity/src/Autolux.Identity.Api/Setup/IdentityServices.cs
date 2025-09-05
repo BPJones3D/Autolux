@@ -21,7 +21,6 @@ public static class IdentityServices
 
         services.AddAutoMapper(cfg =>
         {
-            cfg.AddProfile<RolePermissionMappingProfile>();
             cfg.AddProfile<RoleMappingProfile>();
             cfg.AddProfile<UserMappingProfile>();
         }, Assembly.GetExecutingAssembly());

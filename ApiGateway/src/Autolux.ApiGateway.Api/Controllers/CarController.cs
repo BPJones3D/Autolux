@@ -1,6 +1,8 @@
 ﻿using Autolux.CoreApp.Api.Entities;
 using Autolux.CoreApp.Models.Cars;
+using Autolux.SharedKernel.SharedObjects;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -43,6 +45,7 @@ public class CarController : ControllerBase
     }
 
     [HttpPut]
+    [Authorize(Policy = nameof(PermissionKey.VehicleUpdate))]
     [SwaggerOperation(Summary = "Update an existing car", Tags = ["Cars"])]
     public async Task<ActionResult<List<CarModel>>> UpdateAsync(CarUpdateModel carUpdateModel, CancellationToken cancellationToken)
     {

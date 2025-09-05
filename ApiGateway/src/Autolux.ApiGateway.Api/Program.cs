@@ -22,6 +22,8 @@ configuration.BindConfigurations();
 
 // add services on the container
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddJwtAuthentication(configuration);
+builder.Services.AddPolicies();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -37,14 +39,13 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.CreateMap<Car, CarSummaryModel>();
 });
 
-builder.Services.AddJwtAuthentication(configuration);
-builder.Services.AddPolicies();
 builder.Services.AddSwaggerConfiguration();
 builder.Services.AddInfrastructureServices();
 builder.Services.AddCoreAppServices();
 builder.Services.AddApiServices();
 builder.Services.AddIdentityInfrastructureServices();
 builder.Services.AddIdentityServices();
+builder.Services.AddApiGatewayServices();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.InitializerFluentValidation();
 
@@ -58,7 +59,10 @@ app.UseCors(policy =>
 });
 app.UseCustomSwagger();
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 
 await app.Initialize();

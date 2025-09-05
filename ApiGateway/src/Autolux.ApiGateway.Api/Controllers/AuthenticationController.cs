@@ -31,24 +31,27 @@ public class AuthenticationController(IUserService userService) : ControllerBase
             return Unauthorized();
 
         var roles = new List<Claim>();
-        var claims = new List<Claim>();
+        var claims = new List<Claim>()
+        {
+            new(ClaimTypes.NameIdentifier, $"{user.Id}"),
+            new(ClaimTypes.Name, $"{user.FirstName} {user.LastName}")
+        };
 
         foreach (var role in user.Roles)
         {
             roles.Add(new Claim(ClaimTypes.Role, role.Name));
-            foreach (var permission in role.Permissions)
-            {
-                if (!claims.Any(c => c.Value == $"{permission.PermissionId}"))
-                    claims.Add(new Claim(ClaimTypes.NameIdentifier, $"{permission.PermissionId}"));
-            }
+            claims.AddRange(from permission in role.Permissions
+                            where !claims.Any(c => c.Value == $"{permission.PermissionId}")
+                            select new Claim(ClaimTypes.NameIdentifier, $"{permission.PermissionId}"));
         }
+        Claim[] allClaims = [.. roles, .. claims];
 
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(ApiGatewaySettings.Instance.JWTEncryptionKey);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(roles.Concat(claims).AsEnumerable()),
+            Subject = new ClaimsIdentity(allClaims),
             Expires = DateTime.UtcNow.AddDays(1),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };

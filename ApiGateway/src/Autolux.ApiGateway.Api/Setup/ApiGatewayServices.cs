@@ -1,4 +1,5 @@
-﻿using Autolux.CoreApp.Api.Setup;
+﻿using Autolux.ApiGateway.Api.Configuration.Authorization;
+using Autolux.CoreApp.Api.Setup;
 using Autolux.CoreApp.Infrastructure;
 using Autolux.CoreApp.Models.Cars;
 using Autolux.Identity.Api.Setup;
@@ -14,6 +15,11 @@ public static class ApiGatewayServices
         configuration.Bind(ApiGatewaySettings.CONFIG_NAME, ApiGatewaySettings.Instance);
         configuration.Bind(CoreDbSettings.CONFIG_NAME, CoreDbSettings.Instance);
         configuration.Bind(IdentityDbSettings.CONFIG_NAME, IdentityDbSettings.Instance);
+    }
+
+    public static void AddApiGatewayServices(this IServiceCollection services)
+    {
+        services.AddSingleton<IPermissionValidator>(services => PermissionValidator.Instance);
     }
 
     public static async Task Initialize(this WebApplication app)

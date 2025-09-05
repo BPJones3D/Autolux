@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Autolux.ApiGateway.Api.Configuration.Authorization;
 
@@ -16,8 +17,8 @@ public class PermissionAuthorizationRequirement : AuthorizationHandler<Permissio
         if (context.User is not null)
         {
             var rolesClaim = context.User.Claims.FirstOrDefault(
-                //c => c.Type.Equals("extension_Roles", StringComparison.InvariantCultureIgnoreCase));
-                c => c.Type.Equals("role", StringComparison.InvariantCultureIgnoreCase));
+            c => c.Type.Equals(ClaimTypes.Role));
+
 
             if (rolesClaim is not null)
             {
