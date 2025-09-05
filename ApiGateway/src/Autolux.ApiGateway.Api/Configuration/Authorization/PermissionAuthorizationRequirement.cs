@@ -16,15 +16,13 @@ public class PermissionAuthorizationRequirement : AuthorizationHandler<Permissio
     {
         if (context.User is not null)
         {
-            var rolesClaim = context.User.Claims.FirstOrDefault(
-            c => c.Type.Equals(ClaimTypes.Role));
-
+            var rolesClaim = context.User.Claims.Where(c => c.Type.Equals(ClaimTypes.Role) || c.Type.Equals(ClaimTypes.NameIdentifier)).ToList();
 
             if (rolesClaim is not null)
             {
-                var roles = rolesClaim.Value.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+                var roles = rolesClaim.Select(c => c.Value).ToArray();
 
-                if (PermissionValidator.Instance.ValidateForRoles(RequiredPermissionKey, roles))
+                if (PermissionValidator.Instance.ValidateForClaims(RequiredPermissionKey, roles))
                 {
                     context.Succeed(requirement);
                 }

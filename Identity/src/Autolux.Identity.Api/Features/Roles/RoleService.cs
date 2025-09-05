@@ -11,4 +11,10 @@ public class RoleService(IMapper mapper, IRoleRepository repository) : IRoleServ
         var roles = await repository.GetAllRolesAsync(cancellationToken);
         return mapper.Map<List<RoleDto>>(roles);
     }
+    public async Task<List<RoleDto>> GetListWithPermissionsAsync(CancellationToken cancellationToken)
+    {
+        var roles = await repository.GetListWithPermissionsAsync(cancellationToken);
+
+        return mapper.Map<List<RoleDto>>(roles);
+    }
 }

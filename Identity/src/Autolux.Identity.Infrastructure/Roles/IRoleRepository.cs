@@ -5,4 +5,5 @@ public interface IRoleRepository
 {
     Task<List<Role>> GetAllRolesAsync(CancellationToken cancellationToken = default);
     Task UpdateAsync(CancellationToken cancellationToken = default);
+    Task<List<Role>> GetListWithPermissionsAsync(CancellationToken cancellationToken);
 }

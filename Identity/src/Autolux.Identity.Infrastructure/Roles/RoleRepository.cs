@@ -15,4 +15,14 @@ public class RoleRepository(IdentityDbContext dbContext) : IRoleRepository
     {
         await dbContext.SaveChangesAsync(cancellationToken);
     }
+    public async Task<List<Role>> GetListWithPermissionsAsync(CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        var roles = await dbContext.Roles
+        .Include(x => x.RolePermissions)
+        .ToListAsync(cancellationToken);
+
+        return roles;
+    }
 }

@@ -51,6 +51,7 @@ builder.Services.InitializerFluentValidation();
 
 //Configure the HTTP request pipeline
 var app = builder.Build();
+
 app.UseCors(policy =>
 {
     policy.AllowAnyOrigin()
