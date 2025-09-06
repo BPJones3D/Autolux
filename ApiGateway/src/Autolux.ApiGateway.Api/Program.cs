@@ -48,6 +48,7 @@ builder.Services.AddJwtAuthentication(configuration);
 builder.Services.AddPolicies();
 await builder.Services.AddIdentityServices();
 builder.Services.AddApiGatewayServices();
+
 //Configure the HTTP request pipeline
 var app = builder.Build();
 
