@@ -61,7 +61,7 @@ app.UseCors(policy =>
 app.UseCustomSwagger();
 app.UseHttpsRedirection();
 
-app.UseAuthentication(); /***** HERE *****/
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
