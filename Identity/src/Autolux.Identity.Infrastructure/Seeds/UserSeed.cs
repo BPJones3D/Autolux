@@ -8,8 +8,14 @@ public static class UserSeed
     {
         return
         [
-            new("bjoneswix@gmail.com", passwordHasher.Hash("bjoneswix@gmail.com"), "Ben", "Jones", "en-US", true),
-            new("peter_jones_glass@hotmail.com", passwordHasher.Hash("peter_jones_glass@hotmail.com"), "Peter A", "Jones", "en-US", true)
+            new("admin@test.com", passwordHasher.Hash("admin@test.com"), "Admin", "Test", "en-US", true)
+        ];
+    }
+    public static List<User> GetDealerUsers(IPasswordHasher passwordHasher)
+    {
+        return
+        [
+            new("dealer@test.com", passwordHasher.Hash("dealer@test.com"), "Dealer", "Test", "en-US", true)
         ];
     }
 }

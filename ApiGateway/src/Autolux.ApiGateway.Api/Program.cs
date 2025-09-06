@@ -6,7 +6,6 @@ using Autolux.CoreApp.Domain.Cars;
 using Autolux.CoreApp.Infrastructure.Setup;
 using Autolux.CoreApp.Models.Cars;
 using Autolux.Identity.Api.Setup;
-using Autolux.Identity.Infrastructure.Setup;
 using FluentValidation.AspNetCore;
 using System.Text.Json.Serialization;
 
@@ -22,8 +21,6 @@ configuration.BindConfigurations();
 
 // add services on the container
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddJwtAuthentication(configuration);
-builder.Services.AddPolicies();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -43,12 +40,14 @@ builder.Services.AddSwaggerConfiguration();
 builder.Services.AddInfrastructureServices();
 builder.Services.AddCoreAppServices();
 builder.Services.AddApiServices();
-builder.Services.AddIdentityInfrastructureServices();
-builder.Services.AddIdentityServices();
-builder.Services.AddApiGatewayServices();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.InitializerFluentValidation();
 
+// Authentication & Authorization
+builder.Services.AddJwtAuthentication(configuration);
+builder.Services.AddPolicies();
+await builder.Services.AddIdentityServices();
+builder.Services.AddApiGatewayServices();
 //Configure the HTTP request pipeline
 var app = builder.Build();
 
@@ -61,7 +60,7 @@ app.UseCors(policy =>
 app.UseCustomSwagger();
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
+app.UseAuthentication(); /***** HERE *****/
 app.UseAuthorization();
 
 app.MapControllers();

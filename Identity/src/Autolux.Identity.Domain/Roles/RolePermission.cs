@@ -11,9 +11,8 @@ public class RolePermission
     public Role Role { get; private set; } = default!;
 
     private RolePermission() { }
-    public RolePermission(PermissionKey permissionKey, bool permissionValue)
+    public RolePermission(PermissionKey permissionKey, bool permissionValue) : this(new Permission(permissionKey, permissionValue))
     {
-        Permission = new Permission(permissionKey, permissionValue);
     }
 
     public RolePermission(Permission permission)

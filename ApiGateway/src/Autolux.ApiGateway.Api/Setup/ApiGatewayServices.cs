@@ -2,7 +2,6 @@
 using Autolux.CoreApp.Api.Setup;
 using Autolux.CoreApp.Infrastructure;
 using Autolux.CoreApp.Models.Cars;
-using Autolux.Identity.Api.Setup;
 using Autolux.Identity.Infrastructure.Configuration;
 using FluentValidation;
 
@@ -25,7 +24,6 @@ public static class ApiGatewayServices
     public static async Task Initialize(this WebApplication app)
     {
         await app.Services.InitializeCoreAppDbAsync();
-        await app.Services.InitializeIdentityDbAsync();
     }
 
     public static void InitializerFluentValidation(this IServiceCollection services)

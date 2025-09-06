@@ -16,7 +16,7 @@ public static class RoleSeed
         return
             [
                 globalAdminRole,
-                new Role("Admin", "Admin role"),
+                new Role("Dealer", "Dealer role"),
                 new Role("RetailerAdmin", "Retailer admin role"),
                 new Role("Retailer", "Retailer role"),
             ];

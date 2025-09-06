@@ -57,39 +57,4 @@ public class User : BaseEntity
             _userRoles.Add(userRole);
         }
     }
-
-    public void AssignToRoles(IEnumerable<Guid> roleIds)
-    {
-        if (roleIds is null) return;
-
-        foreach (var roleId in roleIds)
-        {
-            AssignToRole(roleId);
-        }
-    }
-
-    public void RemoveFromRole(Guid roleId)
-    {
-        var userRole = _userRoles.Find(v => v.RoleId == roleId);
-
-        if (userRole is null) return;
-
-        _userRoles.Remove(userRole);
-    }
-
-    public void UpdateRoles(IEnumerable<Guid> roleIds)
-    {
-        if (roleIds is null) return;
-
-        var userRolesToRemove = UserRoles.Where(x => !roleIds.Contains(x.RoleId)).ToList();
-        foreach (var userRoleToRemove in userRolesToRemove)
-        {
-            _userRoles.Remove(userRoleToRemove);
-        }
-
-        foreach (var roleId in roleIds)
-        {
-            AssignToRole(roleId);
-        }
-    }
 }

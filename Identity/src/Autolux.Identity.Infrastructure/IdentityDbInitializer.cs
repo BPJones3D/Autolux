@@ -1,48 +1,38 @@
-﻿using Autolux.Identity.Infrastructure.Authentication;
+﻿using Autolux.Identity.Domain.Permissions;
+using Autolux.Identity.Infrastructure.Authentication;
 using Autolux.Identity.Infrastructure.Seeds;
+using Autolux.SharedKernel.SharedObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Autolux.Identity.Infrastructure;
 public class IdentityDbInitializer(IdentityDbContext dbContext, IPasswordHasher passwordHasher)
 {
-    /// <summary>
-    /// Seed the identity database
-    /// </summary>
-    /// <param name="retry">Number of attempts to seed the database.</param>
-    public async Task SeedAsync(int retry = 0)
+    public async Task SeedAsync()
     {
         await dbContext.Database.EnsureCreatedAsync();
-        try
-        {
-            await SeedRoles();
-            await SeedUsers();
-        }
-        catch
-        {
-            if (retry > 0)
-            {
-                await SeedAsync(retry - 1);
-            }
-        }
+        await SeedRoles();
+        await SeedUsers();
     }
 
     private async Task SeedRoles()
     {
-        if (await dbContext.Roles.CountAsync() == 0)
+        if (!await dbContext.Roles.AnyAsync())
         {
-            dbContext.Roles.AddRange(RoleSeed.GetRoles());
+            var roles = RoleSeed.GetRoles();
+            foreach (var role in roles.Where(r => r.NormalizedName != RoleSeed.GlobalAdminRoleNameNormalized))
+            {
+                var permissions = new List<Permission>() { new(PermissionKey.CustomerRead, true), new(PermissionKey.VehicleRead, true) };
+                role.ClearAndAddPermissions(permissions);
+            }
+            dbContext.Roles.AddRange(roles);
             await dbContext.SaveChangesAsync();
         }
         else
         {
-            // Since at this stage while working on the API we'll be adding new permissions continously
-            // then we'll just re-add all permissions automatically to the globaladmin role.
-
-            var globalAdminRole = await dbContext.Roles.Include(x => x.RolePermissions).FirstOrDefaultAsync(x => x.NormalizedName == RoleSeed.GlobalAdminRoleNameNormalized);
-            if (globalAdminRole == null)
-                throw new ArgumentException("GlobalAdmin role not found");
-
             /* NOTE: GlobalAdmin permissions are ALWAYS reset to ensure all permissions. You'll need to manually configure permissions for other roles */
+            var globalAdminRole = await dbContext.Roles.Include(x => x.RolePermissions).FirstOrDefaultAsync(x => x.NormalizedName == RoleSeed.GlobalAdminRoleNameNormalized)
+                ?? throw new ArgumentException("GlobalAdmin role not found");
+
             var permissions = PermissionSeed.GeneratePermissionsForAdmin();
             globalAdminRole.ClearAndAddPermissions(permissions);
 
@@ -52,15 +42,23 @@ public class IdentityDbInitializer(IdentityDbContext dbContext, IPasswordHasher 
 
     private async Task SeedUsers()
     {
-        if (await dbContext.Users.CountAsync() == 0)
+        if (!await dbContext.Users.AnyAsync())
         {
-            var globalAdminRole = await dbContext.Roles.FirstOrDefaultAsync(x => x.NormalizedName == RoleSeed.GlobalAdminRoleNameNormalized) ?? throw new ArgumentException("GlobalAdmin role not found");
+            var roles = await dbContext.Roles.ToListAsync();
+
+            var globalAdminRole = roles.FirstOrDefault(x => x.NormalizedName == RoleSeed.GlobalAdminRoleNameNormalized) ?? throw new ArgumentException("GlobalAdmin role not found");
             var users = UserSeed.GetGlobalAdminUsers(passwordHasher);
+            users.ForEach(x => x.AssignToRole(globalAdminRole.Id));
+
+            var dealerRole = roles.FirstOrDefault(x => x.NormalizedName == "DEALER");
+            if (dealerRole != null)
+            {
+                var dealerUsers = UserSeed.GetDealerUsers(passwordHasher);
+                dealerUsers.ForEach(x => x.AssignToRole(dealerRole.Id));
+                users = users.Concat(dealerUsers).ToList();
+            }
 
             dbContext.Users.AddRange(users);
-            await dbContext.SaveChangesAsync();
-
-            users.ForEach(x => x.AssignToRole(globalAdminRole.Id));
             await dbContext.SaveChangesAsync();
         }
     }

@@ -1,16 +1,8 @@
-using Autolux.Identity.Api;
+namespace Autolux.Identity.Api;
 
 public static class Program
 {
-    public static void Main(string[] args)
+    public static void Main()
     {
-        CreateHostBuilder(args).Build().Run();
     }
-
-    public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
-            .ConfigureWebHostDefaults(webBuilder =>
-            {
-                webBuilder.UseStartup<Startup>();
-            });
 }
