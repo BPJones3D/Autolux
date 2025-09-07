@@ -21,6 +21,7 @@ public class CarController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Policy = nameof(PermissionKey.VehicleWrite))]
     [SwaggerOperation(Summary = "Add a new car", Tags = ["Cars"])]
     public async Task<ActionResult<CarModel>> AddAsync(CarCreateModel carCreateModel, CancellationToken cancellationToken)
     {
@@ -33,6 +34,7 @@ public class CarController : ControllerBase
     }
 
     [HttpDelete]
+    [Authorize(Policy = nameof(PermissionKey.VehicleDelete))]
     [SwaggerOperation(Summary = "Delete an existing car", Tags = ["Cars"])]
     public async Task<ActionResult> DeleteAsync(CarDeleteModel carDeleteModel, CancellationToken cancellationToken)
     {
