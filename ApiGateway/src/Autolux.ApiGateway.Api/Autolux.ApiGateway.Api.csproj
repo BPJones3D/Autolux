@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\src\Autolux.SharedKernel\Autolux.SharedKernel.csproj" />
     <ProjectReference Include="..\..\..\CoreApp\src\Autolux.CoreApp.Api\Autolux.CoreApp.Api.csproj" />
     <ProjectReference Include="..\..\..\CoreApp\src\Autolux.CoreApp.Infrastructure\Autolux.CoreApp.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\Identity\src\Autolux.Identity.Api\Autolux.Identity.Api.csproj" />
