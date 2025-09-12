@@ -61,11 +61,33 @@ public class CarController : ControllerBase
 
     [HttpGet]
     [SwaggerOperation(Summary = "Get a list of all cars", Tags = ["Cars"])]
-    public async Task<ActionResult<List<CarSummaryModel>>> GetSummaryListAsync(CancellationToken cancellationToken)
+    public async Task<ActionResult<List<CarSummaryModel>>> GetSummaryListAsync(CancellationToken cancellationToken, string filter = "", string filterOrder = "Descending", int page = 1, int pageSize = 4)
     {
-        var allCars = await _carService.GetSummaryListAsync(cancellationToken);
+        // filtering:
+        //      by ID (relevancy)
+        //      by Price
 
-        return Ok(allCars);
+        var allCars = await _carService.GetSummaryListAsync(filter, filterOrder, cancellationToken);
+
+        // used here: https://www.youtube.com/watch?v=fhomCI3bsIM
+        var totalCars = allCars.Count;
+        var totalPages = (int)Math.Ceiling((decimal)totalCars/ pageSize);
+        var carsPerPage = allCars
+            .Skip((page-1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+        // --
+
+        return Ok(carsPerPage);
+    }
+
+    [HttpGet("car-quantity")]
+    [SwaggerOperation(Summary = "Get quantity of cars", Tags = ["Cars"])]
+    public async Task<ActionResult<List<CarSummaryModel>>> GetCarQuantityAsync(CancellationToken cancellationToken, string filter = "", string filterOrder = "Descending")
+    {
+        var allCars = await _carService.GetSummaryListAsync(filter, filterOrder, cancellationToken);
+
+        return Ok(allCars.Count);
     }
 
     [HttpGet("search-by-carId-{id}")]

@@ -69,11 +69,67 @@ public class CarService : ICarService
         return carModel;
     }
 
-    public async Task<List<CarSummaryModel>> GetSummaryListAsync(CancellationToken cancellationToken)
+    public async Task<List<CarSummaryModel>> GetSummaryListAsync(string filter, string filterOrder, CancellationToken cancellationToken)
     {
         var cars = await _carRepository.GetListAsync(cancellationToken);
 
-        var summaryList = _mapper.Map<List<CarSummaryModel>>(cars);
+        var filteredCars = cars;
+
+        switch (filter?.ToLower())
+        {
+            case "price":
+                filteredCars = cars.OrderBy(c => c.Price).ToList();
+                break;
+
+            case "year":
+                filteredCars = cars.OrderBy(c => c.Year).ToList();
+                break;
+
+            case "miles":
+                filteredCars = cars.OrderBy(c => c.Miles).ToList();
+                filteredCars.RemoveAll(s => s.FuelType == "Electric");
+                break;
+
+            case "brand":
+                filteredCars = cars.OrderBy(c => c.Brand).ToList();
+                break;
+
+            case "mpg":
+                filteredCars = cars.OrderBy(c => c.MilesPerGallon).ToList();
+                filteredCars.RemoveAll(s => s.FuelType == "Electric");
+                break;
+
+            case "tankcapacity":
+                filteredCars = cars.OrderBy(c => c.TankCapacity).ToList();
+                filteredCars.RemoveAll(s => s.FuelType == "Electric");
+                break;
+
+            case "evrange":
+                filteredCars = cars.OrderBy(c => c.TankCapacity).ToList();
+                filteredCars.RemoveAll(s => s.FuelType != "Electric");
+                break;
+
+            case "seats":
+                filteredCars = cars.OrderBy(c => c.SeatCount).ToList();
+                break;
+
+            case "doors":
+                filteredCars = cars.OrderBy(c => c.DoorCount).ToList();
+                break;
+
+            case "Relevancy":
+                break;
+
+            default:
+                break;
+        }
+
+        if (filterOrder == "Ascending")
+        {
+            filteredCars.Reverse();
+        }
+
+        var summaryList = _mapper.Map<List<CarSummaryModel>>(filteredCars);
 
         return summaryList;
     }
