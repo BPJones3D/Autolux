@@ -13,7 +13,8 @@ using System.Text.Json.Serialization;
 var configurationBuilder = new ConfigurationBuilder()
     .SetBasePath(Path.Combine(AppContext.BaseDirectory))
     .AddJsonFile("appsettings.json", optional: false)
-    .AddJsonFile($"appsettings.Development.json", optional: true, reloadOnChange: true);
+    .AddJsonFile($"appsettings.Development.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables();
 
 // add and bind configurations
 var configuration = configurationBuilder.Build();
