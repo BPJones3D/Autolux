@@ -1,6 +1,7 @@
 ﻿using Autolux.CoreApp.Domain.Cars;
 using Autolux.CoreApp.Infrastructure.Repositories;
 using Autolux.CoreApp.Models.Cars;
+using Autolux.CoreApp.Models.Shared;
 using AutoMapper;
 
 namespace Autolux.CoreApp.Api.Entities;
@@ -69,13 +70,14 @@ public class CarService : ICarService
         return carModel;
     }
 
-    public async Task<List<CarSummaryModel>> GetSummaryListAsync(string filter, string filterOrder, CancellationToken cancellationToken)
+    public async Task<List<CarSummaryModel>> GetSummaryListAsync(FiltersModel filtersModel, CancellationToken cancellationToken)
     {
         var cars = await _carRepository.GetListAsync(cancellationToken);
-
         var filteredCars = cars;
 
-        switch (filter?.ToLower())
+
+        // sortby
+        switch (filtersModel.filter?.ToLower())
         {
             case "price":
                 filteredCars = cars.OrderBy(c => c.Price).ToList();
@@ -124,9 +126,58 @@ public class CarService : ICarService
                 break;
         }
 
-        if (filterOrder == "Ascending")
+        // sortby direction
+        if (filtersModel.filterOrder == "Ascending")
         {
             filteredCars.Reverse();
+        }
+
+        // text search filter (brand + name)
+        if (filtersModel.search_value != string.Empty && !string.IsNullOrWhiteSpace(filtersModel.search_value))
+        {
+            filteredCars.RemoveAll(c => !c.Name.Contains(filtersModel.search_value, StringComparison.OrdinalIgnoreCase) && !c.Brand.Contains(filtersModel.search_value, StringComparison.OrdinalIgnoreCase));
+        }
+
+        // year filter
+        filteredCars.RemoveAll(c => c.Year < filtersModel.year_min || c.Year > filtersModel.year_max);
+
+        // price filter
+        filteredCars.RemoveAll(c => c.Price < filtersModel.price_min || c.Price > filtersModel.price_max);
+
+        // miles filter
+        filteredCars.RemoveAll(c => c.Miles < filtersModel.miles_min || c.Miles > filtersModel.miles_max);
+
+        // mpg filter
+        filteredCars.RemoveAll(c => c.MilesPerGallon < filtersModel.mpg_min || c.MilesPerGallon > filtersModel.mpg_max);
+
+        // tank capacity filter
+        filteredCars.RemoveAll(c => (c.TankCapacity < filtersModel.tankCapacity_min || c.TankCapacity > filtersModel.tankCapacity_max) && c.Transmission != "EV");
+
+        // ev range filter
+        filteredCars.RemoveAll(c => (c.TankCapacity < filtersModel.evRange_min || c.TankCapacity > filtersModel.evRange_max) && c.Transmission == "EV");
+
+        // seat count filter 
+        filteredCars.RemoveAll(c => c.SeatCount < filtersModel.seatCount_min || c.SeatCount > filtersModel.seatCount_max);
+
+        // door count filter
+        filteredCars.RemoveAll(c => c.DoorCount < filtersModel.doorCount_min || c.DoorCount > filtersModel.doorCount_max);
+
+        // fuel type filter
+        if (filtersModel.fuelType.Any()) // if the list is not empty
+        {
+            filteredCars.RemoveAll(c => !filtersModel.fuelType.Contains(c.FuelType, StringComparer.OrdinalIgnoreCase)); // removes all cars whose fuel type is not in the list
+        }
+
+        // transmission filter
+        if (filtersModel.transmission.Any()) // if the list is not empty
+        {
+            filteredCars.RemoveAll(c => !filtersModel.transmission.Contains(c.Transmission, StringComparer.OrdinalIgnoreCase)); // removes all cars whose transmission is not in the list
+        }
+
+        // brand filter
+        if (filtersModel.brand.Any()) // if the list is not empty
+        {
+            filteredCars.RemoveAll(c => !filtersModel.brand.Contains(c.Brand, StringComparer.OrdinalIgnoreCase)); // removes all cars whose brand is not in the list
         }
 
         var summaryList = _mapper.Map<List<CarSummaryModel>>(filteredCars);
